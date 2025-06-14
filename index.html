@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Z1Pixel offers video editing, graphic design, website design, web development, and mobile app development services.">
+    <meta name="keywords" content="video editing, graphic design, web development, mobile apps, Z1Pixel">
+    <meta name="author" content="Vikram Bhardwaj">
+    <title>Z1Pixel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #fff;
+            --text-color: #333;
+            --header-bg: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1516321497487-e288fb19713f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') no-repeat center center/cover;
+            --nav-bg: #2c3e50;
+            --section-bg: #fff;
+            --card-bg: #fff;
+            --card-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            --primary-color: #00d4ff;
+            --primary-hover: #00b7d4;
+            --secondary-color: #1e3c72;
+            --footer-bg: #2c3e50;
+            --footer-text: #fff;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #1a1a1a;
+            --text-color: #e0e0e0;
+            --header-bg: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('https://images.unsplash.com/photo-1516321497487-e288fb19713f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') no-repeat center center/cover;
+            --nav-bg: #121212;
+            --section-bg: #222;
+            --card-bg: #2c2c2c;
+            --card-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            --primary-color: #00d4ff;
+            --primary-hover: #00b7d4;
+            --secondary-color: #4da8ff;
+            --footer-bg: #121212;
+            --footer-text: #e0e0e0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body {
+            line-height: 1.6;
+            color: var(--text-color);
+            background: var(--bg-color);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        header {
+            background: var(--header-bg);
+            color: var(--footer-text);
+            text-align: center;
+            padding: 4rem 2rem;
+            position: relative;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+
+        .header-social {
+            position: absolute;
+            top: 1rem;
+            right: 2rem;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .header-social a {
+            color: var(--footer-text);
+            font-size: 1.5rem;
+            transition: color 0.3s;
+        }
+
+        .header-social a:hover {
+            color: var(--primary-color);
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 1rem;
+            left: 2rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--footer-text);
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .theme-toggle:hover {
+            color: var(--primary-color);
+        }
+
+        .cta-button {
+            background: var(--primary-color);
+            color: var(--secondary-color);
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .cta-button:hover {
+            background: var(--primary-hover);
+        }
+
+        nav {
+            background: var(--nav-bg);
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        nav.hidden {
+            transform: translateY(-100%);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: var(--footer-text);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+
+        nav a:hover {
+            color: var(--primary-color);
+        }
+
+        .hamburger {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--footer-text);
+            cursor: pointer;
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+        }
+
+        .section {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            background: var(--section-bg);
+        }
+
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        #about {
+            margin-top: 80px;
+        }
+
+        .about, .services, .portfolio, .blog, .contact {
+            text-align: center;
+        }
+
+        .about h2, .services h2, .portfolio h2, .blog h2, .contact h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--secondary-color);
+        }
+
+        .about p, .blog p {
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .services-grid, .portfolio-grid, .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .service-item, .portfolio-item, .blog-item {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.3s;
+        }
+
+        .service-item:hover, .portfolio-item:hover, .blog-item:hover {
+            transform: translateY(-10px);
+        }
+
+        .service-item i {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .service-item h3, .portfolio-item h3, .blog-item h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--secondary-color);
+        }
+
+        .portfolio-item img, .blog-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .portfolio-item a, .blog-item a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .portfolio-item a:hover, .blog-item a:hover {
+            text-decoration: underline;
+        }
+
+        .contact form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            max-width: 600px;
+            margin: 2rem auto;
+        }
+
+        .contact input, .contact textarea {
+            padding: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+            background: var(--card-bg);
+            color: var(--text-color);
+        }
+
+        .contact button {
+            background: var(--primary-color);
+            color: var(--secondary-color);
+            border: none;
+            padding: 1rem;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .contact button:hover {
+            background: var(--primary-hover);
+        }
+
+        .contact-info {
+            margin-top: 2rem;
+            font-size: 1.1rem;
+        }
+
+        .contact-info a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .contact-info a:hover {
+            text-decoration: underline;
+        }
+
+        .contact-info p {
+            margin: 0.5rem 0;
+        }
+
+        .form-message {
+            margin-top: 1rem;
+            font-size: 1rem;
+            color: var(--secondary-color);
+        }
+
+        .form-message.error {
+            color: #e74c3c;
+        }
+
+        .form-message.success {
+            color: #2ecc71;
+        }
+
+        footer {
+            background: var(--footer-bg);
+            color: var(--footer-text);
+            text-align: center;
+            padding: 1.5rem;
+        }
+
+        .social-links {
+            margin-top: 1rem;
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+        }
+
+        .social-icon {
+            color: var(--footer-text);
+            font-size: 1.5rem;
+            transition: color 0.3s;
+        }
+
+        .social-icon:hover {
+            color: var(--primary-color);
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+
+            header p {
+                font-size: 1rem;
+            }
+
+            .header-social {
+                position: static;
+                margin-top: 1rem;
+                justify-content: center;
+            }
+
+            .theme-toggle {
+                position: static;
+                margin: 1rem auto;
+                display: block;
+            }
+
+            .hamburger {
+                display: block;
+            }
+
+            nav ul {
+                display: none;
+                flex-direction: column;
+                background: var(--nav-bg);
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                padding: 1rem;
+            }
+
+            nav ul.active {
+                display: flex;
+            }
+
+            .section {
+                padding: 2rem 1rem;
+            }
+
+            .services-grid, .portfolio-grid, .blog-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-info {
+                font-size: 1rem;
+            }
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root:not([data-theme="light"]) {
+                --bg-color: #1a1a1a;
+                --text-color: #e0e0e0;
+                --header-bg: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('https://images.unsplash.com/photo-1516321497487-e288fb19713f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') no-repeat center center/cover;
+                --nav-bg: #121212;
+                --section-bg: #222;
+                --card-bg: #2c2c2c;
+                --card-shadow: 0 4px 15px rgba(0,0,0,0.3);
+                --primary-color: #00d4ff;
+                --primary-hover: #00b7d4;
+                --secondary-color: #4da8ff;
+                --footer-bg: #121212;
+                --footer-text: #e0e0e0;
+            }
+        }
+    </style>
+</head>
+<body id="top">
+    <header>
+        <button class="theme-toggle" aria-label="Toggle theme">
+            <i class="fas fa-sun"></i>
+        </button>
+        <div class="header-social">
+            <a href="https://www.youtube.com/@z1pixel" target="_blank" aria-label="YouTube">
+                <i class="fab fa-youtube"></i>
+            </a>
+            <a href="https://www.facebook.com/share/1APDb12F38/" target="_blank" aria-label="Facebook">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="https://www.instagram.com/z1pixel?igsh=dDA5YW01cHVsNzc0" target="_blank" aria-label="Instagram">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a href="https://x.com/z1pixel" target="_blank" aria-label="X (Twitter)">
+                <i class="fab fa-x"></i>
+            </a>
+            <a href="https://t.me/@z1pixel" target="_blank" aria-label="Telegram">
+                <i class="fab fa-telegram-plane"></i>
+            </a>
+            <a href="https://wa.me/+918544229288" target="_blank" aria-label="WhatsApp">
+                <i class="fab fa-whatsapp"></i>
+            </a>
+        </div>
+        <h1>Z1Pixel</h1>
+        <p>Transforming Ideas into Reality with Z1Pixel</p>
+        <a href="#contact" class="cta-button">Get in Touch</a>
+    </header>
+
+    <nav id="main-nav" role="navigation">
+        <button class="hamburger" aria-label="Toggle menu">☰</button>
+        <ul>
+            <li><a href="#top">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#portfolio">Work</a></li>
+            <li><a href="#blog">Blog</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <section id="about" class="section about">
+        <h2>About Z1Pixel</h2>
+        <p>Welcome to Z1Pixel, led by Vikram Bhardwaj. We are passionate about delivering top-notch digital solutions, including video editing, graphic design, website design, web development, and mobile application development. Our mission is to help businesses thrive with creative and functional designs that leave a lasting impression.</p>
+    </section>
+
+    <section id="services" class="section services">
+        <h2>Our Services</h2>
+        <div class="services-grid">
+            <div class="service-item">
+                <i class="fas fa-video"></i>
+                <h3>Video Editing</h3>
+                <p>Professional video editing services to create engaging content for ads, social media, and more.</p>
+            </div>
+            <div class="service-item">
+                <i class="fas fa-paint-brush"></i>
+                <h3>Graphic Design</h3>
+                <p>Eye-catching logos, banners, and branding materials to elevate your business.</p>
+            </div>
+            <div class="service-item">
+                <i class="fas fa-desktop"></i>
+                <h3>Website Design</h3>
+                <p>Responsive and user-friendly website designs tailored to your brand.</p>
+            </div>
+            <div class="service-item">
+                <i class="fas fa-code"></i>
+                <h3>Web Development</h3>
+                <p>Custom-built websites with advanced functionality and performance.</p>
+            </div>
+            <div class="service-item">
+                <i class="fas fa-mobile-alt"></i>
+                <h3>Mobile App Development</h3>
+                <p>Innovative mobile apps for iOS and Android to engage your audience.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="portfolio" class="section portfolio">
+        <h2>Our Work</h2>
+        <div class="portfolio-grid">
+            <div class="portfolio-item">
+                <img src="https://th.bing.com/th/id/OIP.tC-xhVNvhaL5eCZj4aBb1gHaE8?cb=iwp2&rs=1&pid=ImgDetMain" alt="Cinematic promotional video for product launch" loading="lazy">
+                <h3>Video Editing</h3>
+                <p>A cinematic promotional video edited in Adobe Premiere Pro for a client's product launch.</p>
+                <a href="video Editing.html">View sample</a>
+            </div>
+            <div class="portfolio-item">
+                <img src="https://i.pinimg.com/originals/2f/e3/73/2fe3733b50a1106e267a7a8fa04b8881.jpg" alt="Vibrant logo and branding package" loading="lazy">
+                <h3>Graphic Design</h3>
+                <p>A vibrant logo and branding package for a startup.</p>
+                <a href="graphic design.html">View sample</a>
+            </div>
+            <div class="portfolio-item">
+                <img src="https://htmlburger.com/blog/wp-content/uploads/2023/04/modern-website-design-examples.jpg" alt="Sleek e-commerce website design" loading="lazy">
+                <h3>Website Design</h3>
+                <p>A sleek, responsive website for an e-commerce brand.</p>
+                <a href="website design.html">View sample</a>
+            </div>
+            <div class="portfolio-item">
+                <img src="https://cdn-images-1.medium.com/v2/resize:fit:1200/1*pE2fOVDikEUwiQJlh4ggzg.jpeg" alt="Custom-built web application" loading="lazy">
+                <h3>Web Development</h3>
+                <p>A custom-built web application with advanced features.</p>
+                <a href="web development.html">View sample</a>
+            </div>
+            <div class="portfolio-item">
+                <img src="https://i.pinimg.com/originals/ca/ba/45/caba456db19dca113ca53e115e21570c.jpg" alt="User-friendly mobile app interface" loading="lazy">
+                <h3>Mobile App</h3>
+                <p>A user-friendly mobile app for a service-based business.</p>
+                <a href="mobilea app development.html">View sample</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="blog" class="section blog">
+        <h2>Our Blog</h2>
+        <p>Stay updated with the latest trends in digital solutions, design tips, and technology insights.</p>
+        <div class="blog-grid">
+            <div class="blog-item">
+                <img src="https://images.unsplash.com/photo-1516321310768-4d9f4a573f4f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Video editing trends blog post" loading="lazy">
+                <h3>Top Video Editing Trends in 2025</h3>
+                <p>Explore the latest techniques in video editing to make your content stand out.</p>
+                <a href="#contact">Read More</a>
+            </div>
+            <div class="blog-item">
+                <img src="https://images.unsplash.com/photo-1507238691740-9032d34d5857?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Timeless logo design principles" loading="lazy">
+                <h3>Designing Logos That Last</h3>
+                <p>Learn the key principles of creating timeless logos for your brand.</p>
+                <a href="#contact">Read More</a>
+            </div>
+            <div class="blog-item">
+                <img src="https://images.unsplash.com/photo-1516321497487-e288fb19713f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Responsive website design best practices" loading="lazy">
+                <h3>Building Responsive Websites</h3>
+                <p>Discover best practices for creating websites that work on all devices.</p>
+                <a href="#contact">Read More</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="section contact">
+        <h2>Contact Us</h2> 
+        
+        <div class="contact-info">
+            <p><i class="fas fa-envelope"></i> <a href="mailto:inz1pixel@gmail.com">inz1pixel@gmail.com</a></p>
+            <p><i class="fas fa-phone"></i> <a href="tel:+918544229288">+91 8544229288</a></p>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2025 Z1Pixel by Vikram Bhardwaj. All rights reserved.</p>
+        <div class="social-links">
+            <a href="https://www.youtube.com/@z1pixel" target="_blank" class="social-icon" aria-label="YouTube">
+                <i class="fab fa-youtube"></i>
+            </a>
+            <a href="https://www.facebook.com/share/1APDb12F38/" target="_blank" class="social-icon" aria-label="Facebook">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="https://www.instagram.com/z1pixel?igsh=dDA5YW01cHVsNzc0" target="_blank" class="social-icon" aria-label="Instagram">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a href="https://x.com/z1pixel" target="_blank" class="social-icon" aria-label="X (Twitter)">
+                <i class="fab fa-x"></i>
+            </a>
+            <a href="https://t.me/z1pixel" target="_blank" class="social-icon" aria-label="Telegram">
+                <i class="fab fa-telegram-plane"></i>
+            </a>
+            <a href="https://wa.me/+918544229288" target="_blank" class="social-icon" aria-label="WhatsApp">
+                <i class="fab fa-whatsapp"></i>
+            </a>
+        </div>
+    </footer>
+
+    <script>
+        // Theme toggle functionality
+        const themeToggle = document.querySelector('.theme-toggle');
+        const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+
+        function setTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+            themeToggle.innerHTML = theme === 'dark' ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+        }
+
+        // Check for saved theme or system preference
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            setTheme(savedTheme);
+        } else {
+            setTheme(prefersDarkScheme.matches ? 'dark' : 'light');
+        }
+
+        // Toggle theme on button click
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            setTheme(currentTheme === 'dark' ? 'light' : 'dark');
+        });
+
+        // Listen for system theme changes
+        prefersDarkScheme.addEventListener('change', (e) => {
+            if (!localStorage.getItem('theme')) {
+                setTheme(e.matches ? 'dark' : 'light');
+            }
+        });
+
+        // Navigation hide/show on scroll with debouncing
+        let lastScrollTop = 0;
+        const nav = document.getElementById('main-nav');
+        let isScrolling;
+
+        window.addEventListener('scroll', function() {
+            clearTimeout(isScrolling);
+            isScrolling = setTimeout(function() {
+                let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+                if (Math.abs(currentScroll - lastScrollTop) > 100) {
+                    if (currentScroll > lastScrollTop && currentScroll > 100) {
+                        nav.classList.add('hidden');
+                    } else {
+                        nav.classList.remove('hidden');
+                    }
+                    lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+                }
+            }, 100);
+
+            // Section slide-up animation
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                const sectionTop = section.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                if (sectionTop < windowHeight * 0.8) {
+                    section.classList.add('visible');
+                }
+            });
+        });
+
+        // Hamburger menu toggle
+        document.querySelector('.hamburger')?.addEventListener('click', () => {
+            document.querySelector('nav ul').classList.toggle('active');
+        });
+
+        // Close mobile menu on link click
+        document.querySelectorAll('nav ul li a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.querySelector('nav ul').classList.remove('active');
+            });
+        });
+
+        // Contact form validation
+        const contactForm = document.getElementById('contact-form');
+        if (contactForm) {
+            contactForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+                const name = document.getElementById('name').value.trim();
+                const email = document.getElementById('email').value.trim();
+                const message = document.getElementById('message').value.trim();
+                const formMessage = document.getElementById('form-message');
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+                if (!name || !email || !message) {
+                    formMessage.textContent = 'Please fill out all fields.';
+                    formMessage.className = 'form-message error';
+                    return;
+                }
+
+                if (!emailRegex.test(email)) {
+                    formMessage.textContent = 'Please enter a valid email address.';
+                    formMessage.className = 'form-message error';
+                    return;
+                }
+
+                formMessage.textContent = 'Message sent successfully!';
+                formMessage.className = 'form-message success';
+                this.reset();
+            });
+        }
+    </script>
+</body>
+</html>
